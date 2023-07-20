@@ -1,11 +1,14 @@
 package shop.mtcoding.mall.model;
 
+import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
+import java.math.BigInteger;
 import java.util.List;
 
 @Repository // 컴퍼넌트 스캔
@@ -53,5 +56,21 @@ public class ProductRepository { // DAO
         product.setPrice(price2);
         product.setQty(qty2);
         return product;
+    }
+
+    // insert, update, delete
+    @Transactional // spring 트랜잭션 (임포트 주의)
+    public void deleteById(int id) {
+        Query query = em.createNativeQuery("delete from product_tb where id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+    public ProductDTO findByTest(int id) {
+        Query query = em.createNativeQuery("select id, name, price, qty, 'good' as des from product_tb where id = :id");
+        query.setParameter("id", id);
+        JpaResultMapper mapper = new JpaResultMapper();
+        ProductDTO productDTO = mapper.uniqueResult(query, ProductDTO.class);
+        return productDTO;
     }
 }
