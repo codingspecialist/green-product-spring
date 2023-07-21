@@ -12,7 +12,6 @@ import shop.mtcoding.mall.model.ProductRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class ProductController {
     @GetMapping("/product/{id}")
     public String detail(@PathVariable int id, HttpServletRequest request){
         System.out.println("id : "+id);
-        Product product = productRepository.findById2(id);
+        Product product = productRepository.findById(id);
         request.setAttribute("p", product);
         System.out.println(product.getId());
         System.out.println(product.getName());
